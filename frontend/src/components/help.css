@@ -1,0 +1,27 @@
+
+div .helpBlurb {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: #2c0971;
+    background-color: #fdfdfd;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+div .helpIcon svg {
+    fill: #8c52ff;
+    width: 3em;
+    height: 3em;
+}
+
+div .helpText {
+    padding-left: 1rem;
+}
+
+div .helpText p {
+    font-size: 0.85rem;
+}
