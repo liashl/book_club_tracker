@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import "./Navigation.css";
+//import {launchUserContext} from '../App.jsx';
+import {useProfile} from '../usercontext.jsx';
 
 function Navigation() {
 
     // showMenu true if mobile (hamburger) menu should display
     const [showMenu, setShowMenu] = useState(false);
 
+    // current username
+    // const [currentUser, setCurrentUser] = launchUserContext();
+
+    // unpack globalUser from context
+    const {globalUser, onUserChange} = useProfile();
+
+
     return (
         <nav>
-            <span className="welcome">Welcome TestUser</span>
+            <span className="welcome">Welcome {globalUser}</span>
             <div className="menu" onClick={ () => {
                 setShowMenu(!showMenu);
             }}>

@@ -1,0 +1,18 @@
+.passwordMask {
+    position: relative;
+    display: block;
+    text-align: left;
+    color: gray;
+    top: -37px;
+    bottom: 10px;
+    left: 10px;
+    width: 90%;
+    height: 100%;
+    align-items: left;
+    justify-content: left;
+    background-color: white;
+    padding: .30rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+

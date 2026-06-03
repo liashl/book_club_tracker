@@ -2,11 +2,13 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import { useState, useEffect } from 'react'; 
+import { UserProvider } from './usercontext.jsx';
 
 // TODO: Build Pages
 import Home from './pages/Home';
 import Suggest from './pages/Suggest';
 import Rank from './pages/Rank';
+import Login from './pages/Login';
 
 // TODO: Build Navigation
 import Navigation from './components/Navigation';
@@ -16,6 +18,19 @@ import Footer from './components/Footer';
 // TODO: move to .env file
 const backendPort = 6057;
 const backendURL = `http://localhost:${backendPort}/`;
+
+//const userContext = React.createContext();
+//function launchUserContext() {
+//	const context = React.useContext(userContext);
+//
+//	if (!context) {
+//		throw new Error("context error");
+//	}
+//
+//	return context;
+//};
+// to use: <userContext.Provider value={value}>
+
 
 function App() {
 
@@ -47,8 +62,24 @@ function App() {
 //		getData();
 //	}, []);
 
+//	const [currentUser, setCurrentUser] = useState(() => {
+		// load from local storage
+//		const saved_user = localStorage.getItem('user_info');
+//console.log(saved_user);
+//return saved_user ? JSON.parse(saved_user) : 'friend';
+//);
+//const value = [currentUser, setCurrentUser];
+
+    // allow user profile to persist in local storage
+    //useEffect(() => {
+    //    localStorage.setItem('user_info', currentUser);
+    //}, [currentUser]);
+
+
+
+
 	return (
-		<>
+		<UserProvider>
 			<Navigation />
 
 			<div className="content-container">
@@ -56,13 +87,15 @@ function App() {
 					<h2>BOOKCLUB BUILDER</h2>
 				</div>
 				<Routes>
+					<Route path= "/login" element = {<Login backendURL={backendURL} />}/>
 					<Route path="/" element = {<Home />} />
 					<Route path="/suggest" element = {<Suggest backendURL={backendURL} />} />
 					<Route path="/rank" element = {<Rank backendURL={backendURL} />} />
 				</Routes>
 			</div>
 
-		</>
+		</UserProvider>
 	);
 
 } export default App;
+

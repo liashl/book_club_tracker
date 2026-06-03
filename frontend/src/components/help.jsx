@@ -11,10 +11,14 @@ function Help({ pageRole }) {
         helpText = "Welcome reader! Take a look at the options below and get started with our community."
     }
     else if (pageRole === "suggest") {
-        helpText = "Suggest what we should read next! Enter the title and author, then leave a comment about why you like the book. Scroll down to let us know when you're finished."
+        helpText = "Suggest what we should read next! Enter the title and author, then leave a comment about why you like the book. Scroll down to let us know when you're finished. (Your pick will be stored on our server and shown to other readers)"
     }
     else if (pageRole === "rank") {
         helpText = "Take a look at what others in our club want to read... and get ready to rank your pick! A poll will be out soon..."
+    }
+
+    else if (pageRole === "login") {
+        helpText = "Enter your username and password to log in"
     }
     
 

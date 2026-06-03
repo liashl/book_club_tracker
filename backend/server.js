@@ -111,6 +111,80 @@ app.get('/rank', async (req,res) => {
 	}
 });
 
+// POST route for user_auth microservice: /register
+app.post('/register', async (req, res) => {
+	try {
+
+		// extract variables from request
+		const data = req.body;
+		const username = data.user_name;
+		const org_id = data.org_id;
+		const password = data.password;
+
+		// url with port for user-auth service
+		const authURL = `http://${process.env.AUTH_HOST}:${process.env.AUTH_PORT}`;
+		const response = await fetch(`${authURL}/register`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}, 
+			body: JSON.stringify({
+				"user_name": user_name,
+				"organization_id_number": org_id,
+				"password": password 
+			})
+		});
+		output = await response.json()
+		console.log(output);
+		res.status(200).json(output);
+
+
+	} catch (error) {
+		console.error("Error executing /usertest", error);
+		res.status(500).send("An error ocurred connecting to user-auth service");
+	}
+})
+
+// POST route for user_auth microservice: login
+app.post('/login', async (req, res) => {
+	try {
+
+		// extract variables from request
+		const data = await req.body;
+		const user_name = await data.user_name;
+		const org_id = await data.org_id;
+		const password = await data.password;
+
+		console.log(JSON.stringify({
+				"user_name": user_name,
+				"organization_id_number": org_id,
+				"password": password
+			}));
+
+		// url with port for user-auth service
+		const authURL = `http://${process.env.AUTH_HOST}:${process.env.AUTH_PORT}`;
+		const response = await fetch(`${authURL}/login`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}, 
+			body: JSON.stringify({
+				"user_name": user_name,
+				"organization_id_number": org_id,
+				"password": password
+			})
+		});
+		output = await response.json()
+		console.log(output);
+		res.status(200).json(output);
+
+	} catch (error) {
+		console.error("Error executing /logintest", error);
+		res.status(500).send("An error occured connecting to user-auth service (route: /login")
+	}
+})
+
+
 // port to listen on
 app.listen(PORT, function() {
 	console.log('Express started on http://localhost:' + PORT + '; press Cntrl-C to terminate');
