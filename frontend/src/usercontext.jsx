@@ -6,14 +6,18 @@ const SessionContext = createContext();
 
 export function UserProvider({children}) {
     const [globalUser, setGlobalUser] = useState ('friend');
+    const [globalAuth, setAuthenticate] = useState (false);
 
     const onUserChange = (user_name) => {
         setGlobalUser((prev) => (user_name));
     };
 
+    const onAuthChange = (auth_value) => {
+        setAuthenticate((prev) => (auth_value));
+    }
 
     return (
-        <UserContext.Provider value = {{globalUser, onUserChange}}>
+        <UserContext.Provider value = {{globalUser, onUserChange, globalAuth, onAuthChange}}>
             {children}
         </UserContext.Provider>
     );

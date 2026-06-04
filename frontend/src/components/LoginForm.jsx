@@ -10,7 +10,7 @@ import {useProfile} from '../usercontext.jsx';
 function LoginForm({backendURL}) {
 
     //const [currentUser, setCurrentUser] = launchUserContext();
-    const {globalUser, onUserChange} = useProfile();
+    const {globalUser, onUserChange, globalAuth, onAuthChange} = useProfile();
 
 
     // initialize data variables
@@ -77,6 +77,7 @@ function LoginForm({backendURL}) {
             // handle success logging in
             if (output["success"]) {
                 // change the current user to the correct username
+                onAuthChange(true);
                 onUserChange(uname);
                 navigate('/')
             }

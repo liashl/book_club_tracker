@@ -81,3 +81,7 @@ span .progressStep {
     padding: 0.5rem;
     size: 0.7rem;
 }
+
+table {
+    display: none;
+}

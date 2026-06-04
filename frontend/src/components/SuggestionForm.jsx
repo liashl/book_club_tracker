@@ -20,7 +20,6 @@ function SuggestionForm({ backendURL} ) {
             ...prevState,
             [name]: value
         })); 
-
     };
 
     const handleSubmit = async (e) => {

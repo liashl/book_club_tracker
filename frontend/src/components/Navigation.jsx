@@ -42,6 +42,11 @@ function Navigation() {
                         setShowMenu(false);
                     }}>Rank</NavLink>
                 </li>
+                <li>
+                    <NavLink to="/login" onClick = { () => {
+
+                    }}>Log In/Out</NavLink>
+                </li>
             </ul>
         </nav>
     )
