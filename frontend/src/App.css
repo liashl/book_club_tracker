@@ -56,20 +56,7 @@ hr {
     text-align: center;
 }
 
-div .tracker-holder {
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
 
-
-
-div .tracker-container img {
-    align-content: center;
-    width: 100%;
-    height: auto;
-}
 
 footer {
     display: flex;

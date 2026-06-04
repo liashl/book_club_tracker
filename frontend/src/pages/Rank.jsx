@@ -77,7 +77,7 @@ function Rank({ backendURL }) {
             <div className="rankDescription">
                 <Help pageRole={"rank"} />
 
-                    <SuggsList suggs={suggs}/>
+                    <SuggsList suggs={suggs} backendURL={backendURL}/>
 
                 <table>
                     <tbody>

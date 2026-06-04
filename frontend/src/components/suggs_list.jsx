@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DndContext } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import SuggsItem from './suggs_item.jsx';
@@ -45,13 +45,39 @@ const dummyData = [
 
 ];
 
-function SuggsList({suggs}) {
+function SuggsList({suggs, backendURL}) {
 
     //console.log(suggs);
     // set data list with dummy data
     const [suggData, setSuggData] = useState(suggs); //dummyData
     //console.log(suggData);
     const listItems = suggData.map(sugg => <SuggsItem sugg={sugg} key={sugg.row} id={sugg.row}/>);
+
+    // has data loaded to microservice yet? 
+    const [rankerLoaded, setRankerLoaded] = useState(false); // begins false
+
+    // load data into the ranker microservice
+    const loadRanker = async (input_data) => {
+        const response = await fetch(backendURL + 'ranker/create', { 
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(input_data)
+        });
+
+        const output = await response.json();
+        return output;
+    }
+
+    useEffect( () => {
+            if (!rankerLoaded) {
+                setRankerLoaded(true);
+                const checker = loadRanker(suggs);
+                if (!checker['success']) {
+                    console.error("loadRanker reports failure");
+                }
+            }
+    
+        }, []);
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -62,7 +88,7 @@ function SuggsList({suggs}) {
                 const oldIndex = items.findIndex(item => item.row === active.id); 
                 const newIndex = items.findIndex(item => item.row === over.id); 
 
-                // TODO store info about move in the backend
+
                 console.log(oldIndex);
                 console.log(newIndex);
                 return arrayMove(items, oldIndex, newIndex);

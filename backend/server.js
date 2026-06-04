@@ -184,6 +184,44 @@ app.post('/login', async (req, res) => {
 	}
 })
 
+// POST route for ranker: create
+app.post('/ranker/create', async (req, res) => {
+
+	try {
+
+		const ranker_host = `http://${process.env.RANKER_HOST}:${process.env.RANKER_PORT}`;
+
+		const data = await req.body;
+		const order_keyword = 'row';
+		const index_keyword = 'suggestionID';
+
+		const request_object = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				records: data,
+				order_keyword: order_keyword,
+				index_keyword: index_keyword
+			})
+		};
+		const compiled = await request_object;
+		
+		//console.log(compiled);
+
+		const response = await fetch(ranker_host + '/', compiled);
+
+		const output = await response;
+		res.status(output.status).json({'success':true})
+		console.log(output);
+
+	} catch (error) {
+		console.error("Error executing '/ranker/create'", error);
+		res.status(500).send("An error occurred connecting to the ranker service")
+	}
+
+})
 
 // port to listen on
 app.listen(PORT, function() {
