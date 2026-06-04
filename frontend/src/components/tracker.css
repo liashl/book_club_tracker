@@ -1,0 +1,86 @@
+div .tracker-holder {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+div .tracker-container img {
+    align-content: center;
+    width: 100%;
+    height: auto;
+}
+
+.button-container {
+    position: absolute;
+    top: 35%;
+    justify-content: center;
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+    height: 6rem;
+}
+
+.tracker-button {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 25%;
+    height: 6rem;
+    background: none;
+    border:none;
+    border-radius: 100px;
+    z-index: 1;
+}
+
+.hover-text {
+    display: none;
+}
+
+.tracker-button:hover > .hover-text {
+    visibility: visible;
+    display: inline-block;
+    position: absolute;
+    top: 2rem;
+    left: 0.5rem;
+    justify-content: space-between;
+    background-color:#2C0971;
+    background-size: cover;
+    color: white;
+    vertical-align: text-top;
+    /*border-radius: 50%;*/
+    font-size: larger;
+    padding: 10%;
+}
+
+
+
+div .checkmark-holder {
+    position: absolute;
+    top: -40%;
+    left: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background:none;
+    width: 100%;
+    gap: 0;
+    z-index: 0;
+}
+
+.check {
+    position: relative;
+    width: 18%;
+    height: 18%;
+    background: none;
+}
+
+.display-0 {
+    visibility: hidden;
+}
+
+.checkmark-holder img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Help from '../components/help';
 import { Link, useNavigate } from 'react-router-dom';
 import {useProfile} from '../usercontext.jsx';
+import Tracker from '../components/tracker';
 
 function Home() {
 
@@ -31,6 +32,9 @@ function Home() {
                 <div className = "dashboardChunk">
                     <Link to="/rank"><span>See Suggestions</span></Link>
                 </div>
+            </div>
+            <div className="tracker-holder">
+                <Tracker />
             </div>
         </>
     )
