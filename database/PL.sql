@@ -854,3 +854,62 @@ BEGIN
 END //
 DELIMITER ;
 -- TO USE: call readers_remove_by_id(5);
+
+-- ---------------------- CHANGES ----------------------------
+
+-- add to changes
+DROP PROCEDURE IF EXISTS changes_add_new;
+DELIMITER //
+
+CREATE PROCEDURE changes_add_new (
+	IN input_suggestion INT,
+	IN input_change_amount INT
+)
+BEGIN
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Error: changes add new" AS result;
+		ROLLBACK;
+	END;
+
+	START TRANSACTION;
+
+		INSERT INTO Changes (changeDate, suggestionID, changeAmount)
+			VALUES (NOW(), input_suggestion, input_change_amount);
+
+		SELECT LAST_INSERT_ID() as changeID;
+	COMMIT;
+END //
+DELIMITER ;
+
+-- USAGE: call changes_add_new(2, -1);
+
+DROP PROCEDURE IF EXISTS get_top_books;
+DELIMITER //
+
+CREATE PROCEDURE get_top_books(
+	IN input_clubID INT
+)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Error: get_top_books" as result;
+		ROLLBACK;
+	END;
+	START TRANSACTION;
+
+		SELECT Suggestions.suggestionID as 'suggestionID', ClubReaders.clubID, IFNULL(ChangeTotals.change, 0) AS total_change
+			FROM Suggestions 
+			LEFT JOIN ClubReaders 
+				ON Suggestions.clubReaderID = ClubReaders.clubReaderID
+					LEFT JOIN 
+						(SELECT suggestionID, SUM(changeAmount) AS 'change' 
+							FROM Changes GROUP BY suggestionID) as ChangeTotals 
+								ON Suggestions.suggestionID = ChangeTotals.suggestionID
+									-- WHERE ClubReaders.clubID = input_clubID
+									ORDER BY total_change DESC;
+
+	COMMIT;
+END //
+DELIMITER ;

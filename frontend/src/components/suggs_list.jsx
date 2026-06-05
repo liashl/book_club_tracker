@@ -68,13 +68,39 @@ function SuggsList({suggs, backendURL}) {
         return output;
     }
 
+    /* fetch request: record item's new position */
+    const moveRankings = async (oldIndex, newIndex) => {
+        const response = await fetch(backendURL + 'ranker/move', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'start': oldIndex,
+                'stop': newIndex,
+            })
+        });
+
+        const output = await response;
+        console.log(output);
+
+    }
+
+    const handleFinalOrder = async (e) => {
+        e.preventDefault();
+
+        // submit get request for changes
+        const response = await fetch(backendURL + 'ranker/changes', {
+            method: 'GET'
+        });
+
+        const changes = await response;
+        const changes_json = await changes.json();
+        console.log(changes_json);
+    }
+
     useEffect( () => {
             if (!rankerLoaded) {
                 setRankerLoaded(true);
                 const checker = loadRanker(suggs);
-                if (!checker['success']) {
-                    console.error("loadRanker reports failure");
-                }
             }
     
         }, []);
@@ -88,7 +114,8 @@ function SuggsList({suggs, backendURL}) {
                 const oldIndex = items.findIndex(item => item.row === active.id); 
                 const newIndex = items.findIndex(item => item.row === over.id); 
 
-
+                moveRankings(oldIndex, newIndex);
+                
                 console.log(oldIndex);
                 console.log(newIndex);
                 return arrayMove(items, oldIndex, newIndex);
@@ -105,6 +132,9 @@ function SuggsList({suggs, backendURL}) {
                     <SortableContext items={suggData.map((item) => item.row) || []}>
                         <div className = "dnd_item" >{listItems}</div>
                     </SortableContext>
+                    <div className="formItem">
+                    <button onClick={handleFinalOrder}>Let My Opinion Be Known</button>
+                    </div>
                 </DndContext>
 
         </div>

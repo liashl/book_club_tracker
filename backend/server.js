@@ -223,6 +223,73 @@ app.post('/ranker/create', async (req, res) => {
 
 })
 
+app.post('/ranker/move', async (req, res) => {
+	try {
+
+		// baseURL for the ranker microservice
+		const ranker_host = `http://${process.env.RANKER_HOST}:${process.env.RANKER_PORT}`;
+
+		const data = await req.body;
+		//console.log(data);
+		const response = await fetch(ranker_host + '/move', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		});
+
+		const output = await response;
+		//console.log(output);
+		res.status(200).json({'success':true});
+
+	} catch (error) {
+		console.error("Error executing /ranker/move", error);
+		res.status(500).send("An error occurred while connecting to the ranker service")
+	}
+
+})
+
+app.get('/ranker/changes', async (req, res) => {
+	try {
+
+		
+
+		// baseURL for the ranker microservice
+		const ranker_host = `http://${process.env.RANKER_HOST}:${process.env.RANKER_PORT}`;
+
+		const response = await fetch(ranker_host + '/changes', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			} 
+		});
+
+		const output = await response;
+		const json_output = await output.json();
+		console.log(json_output);
+
+		for (const change of json_output) {
+
+			// build sql query
+			store_change_query = "CALL changes_add_new(?,?);";
+			const suggestion = change['suggestionID'];
+			const chg = change['change'];
+
+			const [fields] = await db.query(store_change_query, [suggestion, chg]);
+			console.log(fields);
+		}
+		res.status(200).json(json_output);
+
+	} catch (error) {
+		console.error("An error occurred while connecting to the rnaker service: /changes:", error);
+		res.status(500).send("An error occurred while connecting to the ranker service: /changes");
+	}
+
+
+
+})
+
 // port to listen on
 app.listen(PORT, function() {
 	console.log('Express started on http://localhost:' + PORT + '; press Cntrl-C to terminate');

@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS Suggestions;
 DROP TABLE IF EXISTS CurrentReads;
 DROP TABLE IF EXISTS Milestones;
 DROP TABLE IF EXISTS ReadMilestones;
+DROP TABLE IF EXISTS Changes;
 
 -- Create Table: Clubs
 CREATE TABLE Clubs (
@@ -150,6 +151,18 @@ CREATE TABLE ReadMilestones (
 INSERT INTO ReadMilestones (readID, milestoneID, readMileStoneDate) VALUES
 	(1, 1, '2026-04-28'),
     (2, 1, '2026-04-28');
+
+CREATE TABLE Changes (
+    changeID INT AUTO_INCREMENT UNIQUE NOT NULL,
+    changeDate DATETIME NOT NULL,
+    suggestionID INT NOT NULL,
+    changeAmount INT NOT NULL,
+    PRIMARY KEY (changeID),
+    CONSTRAINT fk_sugg FOREIGN KEY (suggestionID)
+        REFERENCES Suggestions(suggestionID)
+        ON DELETE CASCADE
+);
+
 
 SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;

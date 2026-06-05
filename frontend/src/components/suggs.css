@@ -61,3 +61,17 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+div .formItem {
+    display: flex;
+    flex-direction: column;
+    background-color: #8c52ff;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 0.5rem;
+    margin: 0.5rem;
+    justify-content: center;
+    align-items: center;
+
+}
