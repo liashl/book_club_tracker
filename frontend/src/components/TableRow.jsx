@@ -3,14 +3,33 @@ import "./TableRow.css"
 
 function TableRow({ rowObject, backendURL, refreshSuggestions }) {
 
-    const [showVotes, setShowVotes] = useState(true);
+    const [showVotes, setShowVotes] = useState(false);
+
 
     const overlayStyle = {
-        width: "40%"
+        width: "50%"
     }
 
     const hiddenStyle = {
         width: "0%"
+    }
+
+    const submitVote = async (answer) => {
+
+        console.log('vote function called on frontend for', answer);
+        const response = await fetch(backendURL + 'poll/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    myAnswer: answer
+                })
+            });
+
+        const output = await response.json();
+        console.log(output);
+
     }
 
     return (
@@ -21,10 +40,10 @@ function TableRow({ rowObject, backendURL, refreshSuggestions }) {
                     <span className={"suggestion".concat(index)} key={index}>{value}</span>
                 ))}
 
-                <button name={rowObject['suggestionID']} className={`voteButton voteButton-${rowObject['suggestionID']}`}
-                        onClick={() => alert(`${rowObject['suggestionID']} button clicked`)}></button>
+                <button name={rowObject['answer']} className={`voteButton voteButton-${rowObject['suggestionID']}`}
+                        onClick={() => submitVote(rowObject['answer'])}></button>
 
-                <div className="button-overlay" style={showVotes ? overlayStyle : hiddenStyle} ></div>
+                <div className="button-overlay" style={showVotes ? overlayStyle : hiddenStyle}></div>
         </div>
         
     );

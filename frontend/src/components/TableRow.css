@@ -35,8 +35,6 @@ table thead tbody tr td {
     position: absolute;
     top: 0%;
     left:0%;
-
-    width: 75%;
     height: 100%;
     background-color: 
     rgba(44, 9, 113, 0.35);
@@ -66,8 +64,7 @@ table thead tbody tr td {
 }
 
 .suggestion1 {
-    font-weight: bold;
-    size: 0.9rem;  
+    display: none; 
 }
 
 .suggestion2 {
@@ -76,8 +73,8 @@ table thead tbody tr td {
 }
 
 .suggestion3 {
-    font-weight:400;
-    size: 0.5rem; 
+    font-weight: 500;
+    size: 0.7rem;
 }
 
 .suggestion4 {

@@ -218,7 +218,7 @@ app.post('/ranker/create', async (req, res) => {
 
 	} catch (error) {
 		console.error("Error executing '/ranker/create'", error);
-		res.status(500).send("An error occurred connecting to the ranker service")
+		res.status(500).send({"message":"An error occurred connecting to the ranker service"})
 	}
 
 })
@@ -303,9 +303,92 @@ app.get('/poll', async (req, res) => {
 		console.error("An error occurred querying for top books", error);
 		res.status(500).json({"message":"error: poll"});
 	}
+})
 
+app.post('/poll/vote', async (req,res) => {
+	try {
+
+		data = await req.body;
+		console.log(data);
+		const answer = await data['myAnswer'];
+		console.log(answer);
+
+
+		const poll_host = `http://${process.env.POLL_HOST}:${process.env.POLL_PORT}`;
+
+		const poll_info = await fetch(poll_host + '/vote', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				'myAnswer': answer
+			})
+		});
+
+		const results = await poll_info.json();
+
+		res.status(200).json({results});
+	} catch (error) {
+
+		console.error("An error occurred submiting vote", error)
+		res.status(500).json({"message": "error submitting vote"})
+	}
 
 })
+
+
+app.post('/poll/create', async (req,res) => {
+	try {
+
+	// get local books to include in the call
+	const top_books_query = "call get_top_books(2);";
+
+	// query database and call stored procedure
+	const [[top_books]] = await db.query(top_books_query);
+	output = await top_books;
+	console.log(top_books);
+
+	const question = "What book should we read next?";
+	answer1 = await output[0]['title'];
+	answer2 = await output[1]['title'];
+	answer3 = await output[2]['title'];
+	answer4 = await output[3]['title'];
+
+	console.log(answer4);
+	
+	// talk to poll microservice
+
+	const poll_host = `http://${process.env.POLL_HOST}:${process.env.POLL_PORT}`;
+	console.log(poll_host);
+	
+	const poll_info = await fetch(poll_host + '/create', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			question: question,
+			answer1: answer1,
+			answer2: answer2,
+			answer3: answer3,
+			answer4: answer4
+		})
+	});
+	
+	response = await poll_info.json();
+	results = await response['result'][0];
+	output = await results;
+	console.log(results);
+
+	res.status(200).json({output});
+
+	} catch (error) {
+		console.error("An error occurred connecting to poll microservice for /poll/create", error);
+		res.status(500).json({"message": "error: poll/create"});
+	}
+})
+
 
 // port to listen on
 app.listen(PORT, function() {
