@@ -45,7 +45,13 @@ function Navigation() {
                 <li>
                     <NavLink to="/login" onClick = { () => {
 
-                    }}>Log In/Out</NavLink>
+                    }}>Log-In</NavLink>
+                </li>
+
+                <li>
+                    <NavLink to="/poll" onClick = { () => {
+
+                    }}> Vote</NavLink>
                 </li>
             </ul>
         </nav>

@@ -20,6 +20,10 @@ function Help({ pageRole }) {
     else if (pageRole === "login") {
         helpText = "Enter your username and password to log in"
     }
+
+    else if (pageRole === "poll") {
+        helpText = "These are some of the top-ranked books so far. Vote for your favorite!";
+    }
     
 
     return (

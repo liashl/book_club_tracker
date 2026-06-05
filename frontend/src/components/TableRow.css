@@ -2,19 +2,20 @@ table thead tbody tr td {
     border: none;
 }
 
-table {
+.poll {
     border-collapse: separate;
     width: 100%;
 
 }
 
-tbody {
+.pollItemsContainer {
     display: flex;
     flex-direction: column;
     background-color: white;
 }
 
-tr {
+.pollItem {
+    position: relative;
     display: flex;
     flex-direction: column;
     background-color: #8c52ff;
@@ -24,20 +25,65 @@ tr {
     margin: 0.5rem;
 }
 
-td {
+.pollItem span {
     color: #fdfdfd;
     padding: 0.1rem;
+    z-index: 5;
 }
+
+.button-overlay {
+    position: absolute;
+    top: 0%;
+    left:0%;
+
+    width: 75%;
+    height: 100%;
+    background-color: 
+    rgba(44, 9, 113, 0.35);
+    z-index:1;
+}
+
+.voteButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    z-index:10;
+}
+
+.voteButton:hover {
+    background-color: rgba(44, 9, 113, 0.25);
+}
+
+
 
 .suggestion0 {
-    font-weight: bold;
-    size: 0.9rem; 
-}
-
-.suggestion3 {
     display: none;
 }
 
+.suggestion1 {
+    font-weight: bold;
+    size: 0.9rem;  
+}
+
+.suggestion2 {
+    font-weight: 500;
+    size: 0.7rem;
+}
+
+.suggestion3 {
+    font-weight:400;
+    size: 0.5rem; 
+}
+
 .suggestion4 {
+    display: none;
+}
+
+.suggestion5 {
     display: none;
 }

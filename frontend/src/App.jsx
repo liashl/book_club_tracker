@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Suggest from './pages/Suggest';
 import Rank from './pages/Rank';
 import Login from './pages/Login';
+import Poll from './pages/Poll';
 
 // TODO: Build Navigation
 import Navigation from './components/Navigation';
@@ -91,6 +92,7 @@ function App() {
 					<Route path="/" element = {<Home />} />
 					<Route path="/suggest" element = {<Suggest backendURL={backendURL} />} />
 					<Route path="/rank" element = {<Rank backendURL={backendURL} />} />
+					<Route path="/poll" element = {<Poll backendURL={backendURL} />} />
 				</Routes>
 			</div>
 

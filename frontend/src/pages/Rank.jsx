@@ -77,19 +77,7 @@ function Rank({ backendURL }) {
             <div className="rankDescription">
                 <Help pageRole={"rank"} />
 
-                    <SuggsList suggs={suggs} backendURL={backendURL}/>
-
-                <table>
-                    <tbody>
-                    {suggs.map((sugg, index) => (
-                        <TableRow key={sugg.suggestionID} rowObject={sugg} backendURL={backendURL} refreshPeople={getData}/>
-                    ))}
-                    </tbody>
-                </table>
-
-
-
-
+                <SuggsList suggs={suggs} backendURL={backendURL}/>
 
             </div>
         </>

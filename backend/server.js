@@ -285,7 +285,24 @@ app.get('/ranker/changes', async (req, res) => {
 		console.error("An error occurred while connecting to the rnaker service: /changes:", error);
 		res.status(500).send("An error occurred while connecting to the ranker service: /changes");
 	}
+})
 
+app.get('/poll', async (req, res) => {
+
+	try {
+	// TODO: enable different clubs
+	const top_books_query = "call get_top_books(2);";
+
+	// query database and call stored procedure
+	const [top_books] = await db.query(top_books_query);
+
+
+	res.status(200).json(top_books);
+
+	} catch (error) {
+		console.error("An error occurred querying for top books", error);
+		res.status(500).json({"message":"error: poll"});
+	}
 
 
 })

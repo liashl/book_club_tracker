@@ -899,7 +899,11 @@ BEGIN
 	END;
 	START TRANSACTION;
 
-		SELECT Suggestions.suggestionID as 'suggestionID', ClubReaders.clubID, IFNULL(ChangeTotals.change, 0) AS total_change
+		SELECT Suggestions.suggestionID as 'suggestionID', 
+			Suggestions.title as 'title',
+			Suggestions.author as 'author',
+			Suggestions.blurb as 'blurb',
+			ClubReaders.clubID, IFNULL(ChangeTotals.change, 0) AS total_change
 			FROM Suggestions 
 			LEFT JOIN ClubReaders 
 				ON Suggestions.clubReaderID = ClubReaders.clubReaderID
