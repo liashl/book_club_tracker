@@ -4,6 +4,7 @@ import "./TableRow.css"
 function TableRow({ rowObject, backendURL, refreshSuggestions }) {
 
     const [showVotes, setShowVotes] = useState(false);
+    const [currentVotes, setCurrentVotes] = useState(rowObject['votes']);
 
 
     const overlayStyle = {
@@ -29,6 +30,7 @@ function TableRow({ rowObject, backendURL, refreshSuggestions }) {
 
         const output = await response.json();
         console.log(output);
+        setCurrentVotes(currentVotes+1);
 
     }
 
@@ -38,7 +40,7 @@ function TableRow({ rowObject, backendURL, refreshSuggestions }) {
 
                 {Object.values(rowObject).map((value,index) => (
                     <span className={"suggestion".concat(index)} key={index}>{value}</span>
-                ))}
+                ))}<span className="votes">{currentVotes}</span>
 
                 <button name={rowObject['answer']} className={`voteButton voteButton-${rowObject['suggestionID']}`}
                         onClick={() => submitVote(rowObject['answer'])}></button>

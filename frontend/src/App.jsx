@@ -10,6 +10,7 @@ import Suggest from './pages/Suggest';
 import Rank from './pages/Rank';
 import Login from './pages/Login';
 import Poll from './pages/Poll';
+import Tracker from './components/tracker';
 
 // TODO: Build Navigation
 import Navigation from './components/Navigation';
@@ -34,6 +35,33 @@ const backendURL = `http://localhost:${backendPort}/`;
 
 
 function App() {
+    const [trackerData, setTrackerData] = useState([]);
+
+	const getTrackerData = async () => {
+
+		try {
+				const response = await fetch(backendURL + 'tracker', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+
+				const rows = await response.json();
+				console.log(rows);
+				setTrackerData(rows['json_output']);
+
+		} catch (error) {
+			console.error(error);
+		}
+
+	}
+
+	useEffect( () => {
+		getTrackerData();
+	}, []);
+
+
 
 	// store backend response
 //	const [message, setMessage] = useState([])
@@ -89,11 +117,15 @@ function App() {
 				</div>
 				<Routes>
 					<Route path= "/login" element = {<Login backendURL={backendURL} />}/>
-					<Route path="/" element = {<Home />} />
-					<Route path="/suggest" element = {<Suggest backendURL={backendURL} />} />
+					<Route path="/" element = {<Home />} backendURL = {backendURL} trackerData= {trackerData} />
+					<Route path="/suggest" element = {<Suggest backendURL={backendURL} trackerData />} />
 					<Route path="/rank" element = {<Rank backendURL={backendURL} />} />
 					<Route path="/poll" element = {<Poll backendURL={backendURL} />} />
 				</Routes>
+
+	            <div className="tracker-holder">
+                <Tracker backendURL={backendURL} trackerData={trackerData} updateTracker = {setTrackerData} />
+            </div>
 			</div>
 
 		</UserProvider>

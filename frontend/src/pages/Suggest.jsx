@@ -1,8 +1,13 @@
 import SuggestionForm from '../components/SuggestionForm';
 import Help from '../components/help';
+import Tracker from '../components/tracker';
 
 
 function Suggest({backendURL} ) {
+
+
+
+
     return (
         <>
             <div className="pageTitle">
@@ -14,6 +19,9 @@ function Suggest({backendURL} ) {
                 <Help pageRole={"suggest"} />
                 <SuggestionForm backendURL={backendURL} />
             </div>
+
+
+
         </>
     )
 } export default Suggest;

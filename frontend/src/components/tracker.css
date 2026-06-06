@@ -1,8 +1,17 @@
 div .tracker-holder {
+    clear: both;
+    position: fixed;
     display: inline-block;
-    position: absolute;
     bottom: 0;
     left: 0;
+}
+
+div .tracker-container {
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+
 }
 
 div .tracker-container img {

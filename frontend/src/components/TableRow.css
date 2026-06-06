@@ -73,8 +73,7 @@ table thead tbody tr td {
 }
 
 .suggestion3 {
-    font-weight: 500;
-    size: 0.7rem;
+    display: none;
 }
 
 .suggestion4 {

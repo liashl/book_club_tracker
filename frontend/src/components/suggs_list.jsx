@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import SuggsItem from './suggs_item.jsx';
 import './suggs.css';
+
+
 
 
 
@@ -123,7 +125,16 @@ function SuggsList({suggs, backendURL}) {
 
         }
     }
-    //console.log(suggData);
+
+    // citation: adapted from google search
+    const sensors = useSensors(
+    useSensor(TouchSensor, {
+        activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+        },
+    })
+    );
 
 
     return (

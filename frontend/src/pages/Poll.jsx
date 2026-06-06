@@ -8,12 +8,31 @@ function Poll({backendURL}) {
     // declare variable to hold loading status
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isPollDataLoading, setIsPollDataLoading] = useState(true);
+    const [ isLoadingM, setIsLoadingM ] = useState(true);
 
     // declare variable to hold data for poll
     const [ pollOptions, setPollOptions ] = useState([]);
 
     // declare variable to hold data post poll creation
     const [ pollData, setPollData ] = useState([]);
+
+    const [ pollDataM, setPollDataM ] = useState([]);
+ 
+    const getData_microservice = async function () {
+        console.log("Getting new data triggered");
+
+        const response = await fetch(backendURL + 'poll/review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+        const rows = await response.json();
+        await setPollDataM(rows['output']);
+        await setIsLoadingM(false);
+    }
+
 
     const getData = async function () {
         console.log("Trying to load data...");
@@ -76,6 +95,10 @@ function Poll({backendURL}) {
         getData();
     }, []);
 
+    useEffect( () => {
+        getData_microservice();
+    }, []);
+
     
    //load poll
     useEffect( () => {
@@ -113,7 +136,7 @@ function Poll({backendURL}) {
                 <div className="poll">
                    
                     <div className="PollItemsContainer">
-                        {pollData.map((item, index) => (
+                        {pollDataM.map((item, index) => (
                             <TableRow key={index} rowObject={item} backendURL={backendURL} />
                         ))}
                     </div>
@@ -122,8 +145,6 @@ function Poll({backendURL}) {
                     {/* 3. Conditional rendering: Only add the element if post is not null */}
                     
 
-
-                    <button onClick = {startNewPoll}>Start Poll</button>
 
                 </div>
             </div>

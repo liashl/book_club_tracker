@@ -303,7 +303,41 @@ app.get('/poll', async (req, res) => {
 		console.error("An error occurred querying for top books", error);
 		res.status(500).json({"message":"error: poll"});
 	}
-})
+});
+
+app.post('/poll/review', async (req, res) => {
+
+	try {
+
+		my_poll = 2;
+	
+		const poll_host = `http://${process.env.POLL_HOST}:${process.env.POLL_PORT}`;
+
+		const poll_info = await fetch(poll_host + '/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				'myAnswer': {
+					my_pollID: my_poll
+				}
+			})
+		});
+		console.log(poll_info);
+
+		const results = await poll_info.json();
+		const output = results['data'][0];
+		res.status(200).json({output})
+
+	} catch (error) {
+		console.error("An error occurred getting latest poll info", error)
+		res.status(500).json({"message": "error getting poll info"})
+	}
+
+	
+
+});
 
 app.post('/poll/vote', async (req,res) => {
 	try {
@@ -337,7 +371,6 @@ app.post('/poll/vote', async (req,res) => {
 
 })
 
-
 app.post('/poll/create', async (req,res) => {
 	try {
 
@@ -360,7 +393,7 @@ app.post('/poll/create', async (req,res) => {
 	// talk to poll microservice
 
 	const poll_host = `http://${process.env.POLL_HOST}:${process.env.POLL_PORT}`;
-	console.log(poll_host);
+	//console.log(poll_host);
 	
 	const poll_info = await fetch(poll_host + '/create', {
 		method: 'POST',
@@ -379,7 +412,7 @@ app.post('/poll/create', async (req,res) => {
 	response = await poll_info.json();
 	results = await response['result'][0];
 	output = await results;
-	console.log(results);
+	//console.log(results);
 
 	res.status(200).json({output});
 
@@ -389,8 +422,64 @@ app.post('/poll/create', async (req,res) => {
 	}
 })
 
+app.get('/tracker', async (req,res) => {
 
-// port to listen on
+
+	try {
+		const tracker_host = `http://${process.env.TRACKER_HOST}:${process.env.TRACKER_PORT}`;
+
+		const response = await fetch(tracker_host + '/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+		}});
+
+		const output = await response;
+		const json_output = await output.json();
+		console.log(json_output);
+
+		res.status(200).json({json_output});
+
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({"message": "error: poll/create"});
+	}
+});
+
+app.post('/tracker', async (req,res) => {
+
+	try {
+		const tracker_host = `http://${process.env.TRACKER_HOST}:${process.env.TRACKER_PORT}`;
+		data = await req.body;
+		const node_to_check = await data['name_to_check'];
+
+		console.log(node_to_check);
+
+		const response = await fetch(tracker_host + '/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				'name_to_check': node_to_check
+			})
+		});
+
+		const output = await response;
+		console.log(output);
+		const json_output = await output.json();
+		console.log(json_output);
+
+		res.status(200).json({json_output});
+
+	} catch (error) {
+		res.status(500).json({"message": "error: poll/create"});
+		console.error(error);
+	}
+});
+
+
+
 app.listen(PORT, function() {
 	console.log('Express started on http://localhost:' + PORT + '; press Cntrl-C to terminate');
 });
