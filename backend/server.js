@@ -14,7 +14,10 @@ const req = require('express/lib/request');
 app.use(cors({ credentials: true, origin: "*" }));
 app.use(express.json());
 
-// route handler
+/*
+*	GET: DIAGNOSTIC INFORMATION FOR DATABASE CONNECTION
+*		- Can be used to verify that the Bookclub Builder is running
+*/
 app.get('/', async (req, res) => {
 	try {	
 		// define queries
@@ -40,7 +43,9 @@ app.get('/', async (req, res) => {
 	}
 });
 
-// GET data for suggest page
+/*
+*	GET: INDIVIDUAL SUGGESTION (for editing purposes)
+*/
 app.get('/suggest', async (req, res) => {
 	try {
 
@@ -55,7 +60,9 @@ app.get('/suggest', async (req, res) => {
 	}
 })
 
-// POST data for suggest page
+/* 
+*	POST: BOOK SUGGESTIONS INPUT (Target: Bookclub Builder database)
+*/
 app.post('/suggest/create', async function (req,res) {
 	try {
 		// parse data from frontend
@@ -65,7 +72,7 @@ app.post('/suggest/create', async function (req,res) {
 		const test_reader = 1;
 
 		// validate data & filter
-		// TODO
+		// TODO: this was our other small pool microservice!
 
 		// create and execute queries
 		const query7 = `CALL suggestions_add_one(?, ?, ?, ?, ?, @new_suggestion);`;
@@ -95,8 +102,10 @@ app.post('/suggest/create', async function (req,res) {
 	}
 });
 
-
-// GET data for rank page
+/*
+*	GET: DATA TO RANK (Target: Bookclub Builder database)
+*		- provides randomly-ordered lists of book suggestions for Rank page
+*/
 app.get('/rank', async (req,res) => {
 	try {
 		//define queries
@@ -111,7 +120,10 @@ app.get('/rank', async (req,res) => {
 	}
 });
 
-// POST route for user_auth microservice: /register
+/*
+*	POST: USER AUTHENTICATION INFORMATION (Target: User authentication microservice)
+*		- allows bookclub members to register for the site
+*/
 app.post('/register', async (req, res) => {
 	try {
 
@@ -145,7 +157,9 @@ app.post('/register', async (req, res) => {
 	}
 })
 
-// POST route for user_auth microservice: login
+/*
+*	POST: LOGIN TO THE SITE (Target: User Authentication microservice)
+*/
 app.post('/login', async (req, res) => {
 	try {
 
@@ -179,12 +193,14 @@ app.post('/login', async (req, res) => {
 		res.status(200).json(output);
 
 	} catch (error) {
-		console.error("Error executing /logintest", error);
+		console.error("Error executing /login", error);
 		res.status(500).send("An error occured connecting to user-auth service (route: /login")
 	}
 })
 
-// POST route for ranker: create
+/* 
+*	POST: Create a new ranker data object to track book choice changes (Target: ranker microservice)
+*/
 app.post('/ranker/create', async (req, res) => {
 
 	try {
@@ -223,6 +239,9 @@ app.post('/ranker/create', async (req, res) => {
 
 })
 
+/*
+*	POST: record ranking movement from one position to another (Target: ranker microservice)
+*/
 app.post('/ranker/move', async (req, res) => {
 	try {
 
@@ -250,10 +269,13 @@ app.post('/ranker/move', async (req, res) => {
 
 })
 
+
+/*
+*	GET: list of changes from the active ranking session
+*		- can be used to create a poll
+*/
 app.get('/ranker/changes', async (req, res) => {
 	try {
-
-		
 
 		// baseURL for the ranker microservice
 		const ranker_host = `http://${process.env.RANKER_HOST}:${process.env.RANKER_PORT}`;
@@ -287,6 +309,10 @@ app.get('/ranker/changes', async (req, res) => {
 	}
 })
 
+/*
+*	GET: get the top books recorded by ranking sessions for a poll (Bookclub Builder database)
+*		- this provides us with the titles that we pass to microservice to build the poll 
+*/
 app.get('/poll', async (req, res) => {
 
 	try {
@@ -305,6 +331,9 @@ app.get('/poll', async (req, res) => {
 	}
 });
 
+/*
+*	POST: Latest poll data (Calls poll microservice to get latest votes)
+*/
 app.post('/poll/review', async (req, res) => {
 
 	try {
@@ -339,6 +368,9 @@ app.post('/poll/review', async (req, res) => {
 
 });
 
+/*
+*	POST: increments the count for a given poll option by one count (poll microservice)
+*/
 app.post('/poll/vote', async (req,res) => {
 	try {
 
@@ -371,6 +403,10 @@ app.post('/poll/vote', async (req,res) => {
 
 })
 
+/*
+*	POST: Creates a new poll (poll microservice)
+* 		- This method also calls the local database to get the books to include
+*/
 app.post('/poll/create', async (req,res) => {
 	try {
 
@@ -422,6 +458,9 @@ app.post('/poll/create', async (req,res) => {
 	}
 })
 
+/*
+*	GET: grab the latest information from the tracker microservice
+*/
 app.get('/tracker', async (req,res) => {
 
 
@@ -446,6 +485,9 @@ app.get('/tracker', async (req,res) => {
 	}
 });
 
+/*
+*	POST: switch a checkmark on or off in the tracker microservice
+*/
 app.post('/tracker', async (req,res) => {
 
 	try {
